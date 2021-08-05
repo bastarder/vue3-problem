@@ -1,12 +1,14 @@
 <template>
   <div>
-    {{ b }}
+    {{ a }}
+    <button @click="test">test</button>
+    <!-- <HelloWorld/> -->
   </div>
 
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref, reactive, toRefs, computed, watchEffect, triggerRef } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 export default defineComponent({
@@ -15,15 +17,19 @@ export default defineComponent({
     HelloWorld
   },
   setup() {
-    const refA = ref(1);
-    const reactiveB = reactive({ k: refA });
-    console.log(reactiveB.k)
+    const a = ref(1)
 
-    setTimeout(() => {
-      refA.value = Math.random();
-    }, 5000);
+    watchEffect(() => {
+      console.log('effect', a.value)
+    })
+
+    function test() {
+      triggerRef(a)
+    }
+
     return {
-      b: reactiveB
+      a,
+      test
     }
 
   }
